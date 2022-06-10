@@ -11,10 +11,11 @@ build_docker_image:
     - docker:20.10.16-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKERFILE_CONTEXT: "./build"
     IMAGE_NAME: meschac38000/demo-app
     IMAGE_TAG: python-app-1.0
   before_script:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
   script:
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG $DOCKERFILE_CONTEXT
     - docker push $IMAGE_NAME:$IMAGE_TAG
