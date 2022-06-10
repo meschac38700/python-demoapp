@@ -11,7 +11,7 @@ build_docker_image:
     - docker:20.10.16-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    DOCKERFILE_CONTEXT: "./build"
+    DOCKERFILE_CONTEXT: "."
     IMAGE_NAME: meschac38000/demo-app
     IMAGE_TAG: python-app-1.0
   before_script:
