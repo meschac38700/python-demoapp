@@ -37,7 +37,9 @@ deploy:
     - docker ps -aq | grep . && docker rm -f $(docker ps -aq)
   script:
     - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY $SSH_USER@$SERVER_IP "
+      alias run_container='docker run -d -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"' &&
       docker logout &&
       docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.io &&
-      docker run -d -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
+      (docker ps -aq | grep . && docker rm -f $(docker ps -aq) && run_container) ||
+      run_container"
 
