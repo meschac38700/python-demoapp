@@ -39,5 +39,5 @@ deploy:
     - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY $SSH_USER@$SERVER_IP "
       docker logout &&
       docker login -u $REGISTRY_USER -p $REGISTRY_PASS docker.io &&
-      (docker ps -aq | grep . && docker rm -f $(docker ps -aq) && docker run -d -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG) ||
-      docker run -d -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
+      (docker ps -aq | grep . && docker rm -f docker-app && docker run -d --name docker-app -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG) ||
+      docker run -d --name docker-app -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
