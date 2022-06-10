@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  IMAGE_NAME: meschac38000/demo-app
+  IMAGE_NAME: demo-app
   IMAGE_TAG: python-app-1.0
 
 run_tests:
@@ -23,13 +23,12 @@ build_docker_image:
     - docker:20.10.16-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    DOCKERFILE_CONTEXT: "."
   before_script:
     - docker logout
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
   script:
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG $DOCKERFILE_CONTEXT
-    - docker push $IMAGE_NAME:$IMAGE_TAG
+    - docker build -t $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG .
+    - docker push $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG
 
 deploy:
   stage: deploy
@@ -40,5 +39,5 @@ deploy:
       docker logout &&
       docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
       docker ps -aq | xargs docker stop | xargs docker rm &&
-      docker run -d -p 5000:5000 $IMAGE_NAME:$IMAGE_TAG"
+      docker run -d -p 5000:5000 $REGISTRY_USER/$IMAGE_NAME:$IMAGE_TAG"
 
