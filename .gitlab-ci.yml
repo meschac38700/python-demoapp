@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  IMAGE_NAME: demo-app
+  IMAGE_NAME: demo2-app
   IMAGE_TAG: python-app-1.0
 
 run_tests:
